@@ -7,6 +7,33 @@ import io
 
 st.set_page_config(page_title="GPT Vision App", layout="centered")
 
+#set password protect
+
+# 🔒 Password Protection
+def check_password():
+    def password_entered():
+        if st.session_state["password_input"] == st.secrets["APP_PASSWORD"]:
+            st.session_state["password_correct"] = True
+        else:
+            st.session_state["password_correct"] = False
+
+    if "password_correct" not in st.session_state:
+        st.text_input("Enter password", type="password", on_change=password_entered, key="password_input")
+        return False
+    elif not st.session_state["password_correct"]:
+        st.text_input("Enter password", type="password", on_change=password_entered, key="password_input")
+        st.error("❌ Incorrect password")
+        return False
+    else:
+        return True
+
+if not check_password():
+    st.stop()
+
+# ✅ If password is correct, app continues
+
+
+
 st.title("🧠 GPT Vision App")
 st.caption("Upload an image and get a GPT-4 Vision description.")
 
